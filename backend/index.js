@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+const routes = require("./routes")
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 })
 
 // require("./routes")(app)
+app.use("/", [routes])
 
 app.listen(process.env.BACKEND_PORT, () => {
   console.log("Server is running on port " + process.env.BACKEND_PORT)
