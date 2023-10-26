@@ -14,16 +14,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 
 app.get("/", (req, res) => {
-  res.json({ message: "PUMA Challenge" })
+  res.json({ message: "PServerUMA Challenge" })
 })
 
 // require("./routes")(app)
 app.use("/", [routes])
 
-app.listen(port, () => {
+server = app.listen(port, () => {
   console.log("Server is running on port " + port)
 })
 
 module.exports = {
-  app
+  server
 };

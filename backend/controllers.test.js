@@ -1,17 +1,17 @@
 const axios = require('axios');
 const { users } = require('./controller');
-const { app } = require('./index');
+const { server } = require('./index');
 
 describe('POST /users', () => {
     it('should add a new user to users array if a valid username is provided', async () => {
         const response = await axios.post('http://localhost:5000/users', { username: 'thiagompc' });
-        expect(response.status).toBe(201);
+        expect(response.status).toBe(200);
         expect(response.data.username).toBe('thiagompc');
-        expect(response.data.starred).toBe(false);
+        expect(response.data.favorite).toBe(false);
     });
 
     it('should return an error warning that the username provided already exists in users array', async () => {
-        users.push({ username: 'thiagompc', starred: false });
+        users.push({ username: 'thiagompc', favorite: false });
 
         try {
             const response = await axios.post('http://localhost:5000/users', { username: 'thiagompc' });
@@ -41,11 +41,11 @@ describe('DELETE /users/:username', () => {
     it('should remove the user from users list when a username that is on the list is provided', async () => {
         const username = 'thiagompc';
 
-        users.push({ username, starred: false });
+        users.push({ username, favorite: false });
 
         const response = await axios.delete(`http://localhost:5000/users/${username}`);
-        expect(response.status).toBe(204);
-        expect(favoriteUsers.length).toBe(0);
+        expect(response.status).toBe(200);
+        expect(users.length).toBe(0);
     });
 
     it('should return an error when deleting a non existing user', async () => {
@@ -73,21 +73,21 @@ describe('PATCH /users/:username/toggle-star', () => {
     });
 
     it('should toggle the favorite property of the user and set all other users as false', async () => {
-        favoriteUsers.push(
-            { username: 'thiagompc', starred: true },
-            { username: 'juju', starred: false },
-            { username: 'daniel', starred: false }
+        users.push(
+            { username: 'thiagompc', favorite: true },
+            { username: 'juju', favorite: false },
+            { username: 'daniel', favorite: false }
         );
 
-        const username = 'sehun';
+        const username = 'thiagompc';
         const response = await axios.patch(`http://localhost:5000/users/${username}/toggle-star`);
 
-        expect(response.status).toBe(204);
+        expect(response.status).toBe(200);
         const updatedUser = users.find(user => user.username === username);
-        expect(updatedUser.facorite).toBe(false);
+        expect(updatedUser.favorite).toBe(false);
         users.forEach(user => {
             if (user.username !== username) {
-                expect(user.facorite).toBe(false);
+                expect(user.favorite).toBe(false);
             }
         });
     });
