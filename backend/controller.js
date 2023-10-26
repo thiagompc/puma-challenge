@@ -27,7 +27,7 @@ module.exports = {
           favorite: false
         }
         users.push(newUser)
-        resolve(users)
+        resolve(newUser)
       }
       else return res.status(400).json({ error: 'Não é possível adicionar mais de 5 usuários' });
     }
